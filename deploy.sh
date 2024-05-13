@@ -13,5 +13,11 @@ sudo systemctl daemon-reload
 sudo systemctl restart accel-ppp
 sudo systemctl status accel-ppp
 sudo iptables -t nat -C POSTROUTING -j MASQUERADE -s 192.168.0.0/24 || sudo iptables -t nat -I POSTROUTING -j MASQUERADE -s 192.168.0.0/24
-while ! ip --br a show ppp0; do sleep 1; done
-sudo ip r add 192.168.0.0/24 dev ppp0 table wan_routable
+while [[ -z "$ppp_dev" ]]; do
+  ppp_dev=$(ip --br a | awk '/192.168.0.1/ {print $1}')
+  sleep 1
+done
+sudo ip r add 192.168.0.0/24 dev $ppp_dev table wan_routable
+sudo sed -i -e '/^ListenAddress 127.0.0.1/a ListenAddress 192.168.0.1' /etc/ssh/sshd_config
+sudo systemctl restart sshd
+
