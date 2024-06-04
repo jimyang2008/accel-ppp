@@ -5,7 +5,6 @@ logger "haha: $@"
 
 ppp_dev=$1
 ppp_ip=$4
-
 ppp_subnet="${ppp_ip%.*}.0/24"
 
 iptables -t nat -D POSTROUTING -j MASQUERADE -s $ppp_subnet

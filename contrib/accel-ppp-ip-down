@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# ppp0 none 0 192.168.0.1 192.168.0.2 08:35:71:29:e3:58
+logger "hehe: $@"
+
+ppp_dev=$1
+ppp_ip=$4
+ppp_subnet="${ppp_ip%.*}.0/24"
+
+iptables -t nat -D POSTROUTING -j MASQUERADE -s $ppp_subnet
+ip route del $ppp_subnet dev $ppp_dev table wan_routable
+sed -i -e "/^ListenAddress $ppp_ip/d" /etc/ssh/sshd_config
+systemctl restart sshd

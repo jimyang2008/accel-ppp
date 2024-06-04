@@ -8,6 +8,7 @@ sudo make install
 )
 sudo cp contrib/accel-ppp.conf /etc/
 sudo cp contrib/accel-ppp-ip-up /etc/ppp/ip-up.d/
+sudo cp contrib/accel-ppp-ip-down /etc/ppp/ip-down.d/
 sudo cp contrib/accel-ppp.service /etc/systemd/system/
 sudo fgrep 'test * 123456' /etc/ppp/chap-secrets || echo 'test * 123456 *' | sudo tee -a /etc/ppp/chap-secrets
 sudo systemctl daemon-reload
