@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ( mkdir -p build; cd build
+sudo apt update
 sudo apt install -y libpcre3-dev build-essential cmake libssl-dev
 cmake -DBUILD_DRIVER=TRUE -DRADIUS=FALSE ..
 make
